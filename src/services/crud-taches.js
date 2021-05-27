@@ -62,3 +62,8 @@ export async function supprimer(uid, tid) {
     .doc(tid).delete();
 }
 
+export async function supprimerCompletees(uid)
+{
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches)
+   .where('completee', '==', 'true').delete();
+}

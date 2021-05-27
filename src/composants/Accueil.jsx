@@ -9,7 +9,6 @@ export default function Accueil() {
     <div className="Accueil">
       <h3 className="logo">Memo</h3>
       <div id="firebaseui-widget"></div>
-      ds
     </div>
   )
 }

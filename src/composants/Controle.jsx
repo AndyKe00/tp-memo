@@ -3,7 +3,8 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { supprimerCompletees } from '../services/crud-taches';
+import * as crudTaches from '../services/crud-taches';
+
 
 
 export default function Controle({etatTaches, utilisateur}) {
@@ -18,10 +19,10 @@ export default function Controle({etatTaches, utilisateur}) {
         // onClick={() => afficherTout()}
          value={'toutes'}>Toutes</ToggleButton>
         <ToggleButton
-        // onClick={() => afficherCompletees()}
+         onClick={() => crudTaches.lireCompletees(utilisateur.uid)}
          value={true}>Complétées</ToggleButton>
         <ToggleButton
-        // onClick={() => afficherActives()}
+         onClick={() => crudTaches.afficherActives(utilisateur.uid)}
          value={false}>Actives</ToggleButton>
       </ToggleButtonGroup>
       <span className="compte">
@@ -32,7 +33,7 @@ export default function Controle({etatTaches, utilisateur}) {
         size="small" 
         variant="contained" 
         color="secondary" 
-        onClick={() => supprimerCompletees(etatTaches, utilisateur)} 
+        onClick={() => crudTaches.supprimerCompletees(utilisateur.uid)} 
         title="Supprimer les tâches complétées"
       >
         <DeleteIcon fontSize="small" />
@@ -40,4 +41,6 @@ export default function Controle({etatTaches, utilisateur}) {
     </footer>
   );
 }
+
+
 

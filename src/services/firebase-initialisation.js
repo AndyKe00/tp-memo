@@ -16,3 +16,4 @@ export const instanceFirebaseUI = new firebaseui.auth.AuthUI(instanceFirebaseAut
 
 // Initialiser Firestore
 export const instanceFirestore = firebase.firestore();
+

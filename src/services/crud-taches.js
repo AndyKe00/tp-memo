@@ -26,7 +26,7 @@ export async function creer(uid, tache) {
 export async function lireTout(uid) {
   const taches = [];
   return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches)
-                  .orderBy('completee', 'desc')
+                  .orderBy('completee', 'asc')
                   .orderBy('date', 'desc').get().then(
                   reponse => reponse.forEach(
                     doc => {
@@ -37,6 +37,45 @@ export async function lireTout(uid) {
                   () => taches
                 );
 }
+
+/* Devrait marcher en regardant la console, mais le composant ne refresh pas */
+export async function lireCompletees(uid) {
+  const tachesCompletees = [];
+  console.log(tachesCompletees);
+
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches)
+  .where("completee", "==", true).get().then(
+    reponse => reponse.forEach(
+      doc => {
+        tachesCompletees.push({id: doc.id, ...doc.data()})
+      }
+    )
+  ).then(
+    () => tachesCompletees
+  );
+}
+
+/* Pas capable de refresh le component, sinon ca devrait montrer les taches actives
+ comme indique dans la console*/
+
+export async function afficherActives(uid) {
+  const tachesActives = [];
+  console.log(tachesActives);
+
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches)
+  .where("completee", "==", false).get().then(
+    reponse => reponse.forEach(
+      doc => {
+        tachesActives.push({id: doc.id, ...doc.data()})
+      }
+    )
+  ).then(
+    () => tachesActives
+  );
+}
+
+
+
 
 /**
  * Modifie l'état d'une tâche dans Firestore pour l'utilisateur connecté
@@ -64,6 +103,14 @@ export async function supprimer(uid, tid) {
 
 export async function supprimerCompletees(uid)
 {
-  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches)
-   .where('completee', '==', 'true').delete();
+  return instanceFirestore.collection(collUtil)
+  .doc(uid).collection(collTaches)
+   .where('completee', '==', true).get().then(
+     fctDel =>
+     {
+       fctDel.forEach(
+         doc => doc.ref.delete()
+       );
+     } 
+   )
 }
